@@ -4,7 +4,7 @@ Creating a game manager class that determines state of the game and what informa
 We have chosen the game of Perudo. 
 
 """
-from typing import List
+from typing import List, Tuple
 import numpy as np
 
 class PerudoGameManager:
@@ -22,7 +22,7 @@ class PerudoGameManager:
         self.dices_pp: List[int] = [5] * num_players
 
         self.dice_values: dict = {}
-        self.current_bet: List[int] = [0,0]
+        self.current_bet: List[int] = [0,0] # quantity, value
         self.player_to_move = 0
         self.eliminated_players: List[int] = []
 
@@ -47,7 +47,11 @@ class PerudoGameManager:
     def bluff_called(self, player, quantity):
         """
         Player calls a bluff.
+        1. Evaluate it's truth.
+        2. Determine who wins/loses and withdraw a dice accordingly.
+        3. Reset bet, player_to_move
         """
+
         pass
 
     def get_game_state(self):

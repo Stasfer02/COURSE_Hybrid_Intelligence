@@ -9,20 +9,16 @@ class Agent(ABC):
     """
     @abstractmethod
     def __init__(self):
-
         pass
     
     @abstractmethod
     def make_decision(self, own_dices, current_bet):
-
         pass
 
     @abstractmethod
-    def place_bet(self):
-
+    def _place_bet(self):
         pass
 
     @abstractmethod
-    def call_bluff(self):
-        
+    def _call_bluff(self):
         pass
