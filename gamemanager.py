@@ -29,7 +29,7 @@ class PerudoGameManager:
         """
         Roll the dices for all players. 
         """
-        # inialize as empty
+        # inialize as empty at the start of every round.
         self.dice_values = {}
         
         for player_idx in range(len(self.players)):
@@ -38,7 +38,8 @@ class PerudoGameManager:
             
             self.dice_values[self.players[player_idx]] = player_dicethrow
         
-        # also reset the current bet
+        # also reset the current bet. 
+        # TODO maybe we should incorporate some starting command for the first bet.
         self.current_bet = [1,1]
 
         pass
@@ -61,10 +62,12 @@ class PerudoGameManager:
         2. Determine who wins/loses and withdraw a dice accordingly.
         """
         print("Bluff called by player: ", self.players[self.player_to_move_idx],"at player index:", self.player_to_move_idx, "\n")
+        
         bet = self.current_bet
         quantity = bet[0]
         value = bet[1]
         print("Current bet: There are ", quantity, " dices with value: ", value)
+
         true_quantity = self._count_dices(value)
         print("True quantity: ", true_quantity)
 
@@ -77,12 +80,17 @@ class PerudoGameManager:
             self._remove_dice(prev_player_idx)
         
         # reset player to move
+        # TODO we now always set this to player at index 0, but maybe this should be different? like always the player that just lost a dice or something.
         self.player_to_move_idx = 0
         pass
 
 
     def _next_player(self) -> None:
+        """
+        Private method to determine the next player to move. 
+        """
         if self.player_to_move_idx == (len(self.players)-1):
+            # it is the last player in the list, go back to player at index 0
             self.player_to_move_idx = 0
         else:
             self.player_to_move_idx += 1
@@ -90,44 +98,56 @@ class PerudoGameManager:
         pass
     
     def _prev_player_idx(self) -> int:
+        """
+        Private method to get the previous player. (for taking dices)
+        """
         if self.player_to_move_idx == 0:
+            # it is the first player, so go to end of the list.
             return (len(self.players) - 1)
         else:
             return (self.player_to_move_idx - 1)
 
 
     def _remove_dice(self, player_idx) -> None:
+        """
+        Private method for removing a dice from a certain player.
+        """
         print("Removing dice from player: ", self.players[player_idx], "at player index: ", player_idx)
-        print("Dices_pp: ",self.dices_pp)
+
+        # subtract a dice 
         self.dices_pp[player_idx] -= 1
-        print("Dices)pp: ",self.dices_pp)
+
         # check if the player has no dices left
         if self.dices_pp[player_idx] == 0:
+            # if so, eliminate the player
             self._eliminate_player(player_idx)
-
-        else:
-            # not eliminated, so start the next round
-            self.player_to_move_idx = player_idx
         
         pass
 
     def _eliminate_player(self, player_idx) -> None:
         """
-        eliminate a player from the active player list
+        eliminate a player from the active player list, also remove it's index from the "dices per player" list to ensure these align.
         """
         print("Eliminating player: ", self.players[player_idx], "at index: ", player_idx)
+
         del self.players[player_idx]
         del self.dices_pp[player_idx]
 
         pass
 
     def _count_dices(self, value) -> int:
+        """
+        Private method to evaluate the amount of dices of some value in the current round. 
+        Used to evaluate the bluff.
+        """
         count = 0
 
         for key, valuelist in self.dice_values.items():
             for item in valuelist:
                 if item == value:
                     count += 1
+        
+        pass
 
         return count
     def get_game_state(self):
@@ -136,7 +156,6 @@ class PerudoGameManager:
         1. players in the game
         2. dices on the table
         3. current bet
-        4. player to move
+        4. player to move.
         """
-
         return self.players, self.dice_values, self.current_bet, self.players[self.player_to_move_idx]

@@ -19,38 +19,41 @@ def main() -> None:
     active_game = True
     winning_player = None
     while active_game == True:
-        # While there is more than 1 active player
+        # While there is more than 1 active player, roll the dices for a round of Perudo!
         print("\n","-"* 100,"NEW ROUND, ROLLING THE DICES", "-"*100)
-        gameManager.roll_all_dices()                    # roll the dices
-        bluff_called = False
+        gameManager.roll_all_dices()
 
+        bluff_called = False
+        first_bet = True
         while bluff_called == False:
-            # now we enter a game of betting/bluffing
+            # now we enter a series of betting/bluffing
             active_players, all_dices, current_bet, player_to_move = gameManager.get_game_state()
-            player_dices = all_dices[player_to_move]
             print("BETTING ROUND: players: ",active_players, "current bet: ", current_bet, "player to move: ", player_to_move, " total dices: ", all_dices)
 
-            decision = players[player_to_move].make_decision(player_dices, current_bet)
-            
+            # get the player decision
+            player_dices = all_dices[player_to_move]
+            decision = players[player_to_move].make_decision(player_dices, current_bet, first_bet)
+            first_bet = False # only place a first_bet once
+
             if decision == "bluff":
-                # bluff called! let's evaluate.
-                gameManager.bluff_called()
+                # bluff called! We can exit the series now.
                 bluff_called = True
+                # let's evaluate the bluff.
+                gameManager.bluff_called()
             else:
-                # we place a bet
+                # A bet is placed, we continue with the series.
                 gameManager.bet_placed(decision)
-                # we continue the game until bluffed
         
-        # a game has been played, dices are taken. Continue if there is still more than 1 player.
+        # A game has been played after someone has called bluff.
+        # We have taken the dices and potentially eliminated a player, so evaluate the amount of players to determine whether or not to continue.
         active_players, x, y, z = gameManager.get_game_state()
         if len(active_players) <= 1:
             active_game = False
-            winning_player = active_players
+            winning_player = active_players[0]
     
     # game is done! print the winner.
     print("-"* 200,"\n","-"* 200)
-    print("End of the game! player(s) left: ", winning_player)
-    print("\n")
+    print("End of the game! The winning player: ", winning_player, "\n")
 
 if __name__ == "__main__":
     main()

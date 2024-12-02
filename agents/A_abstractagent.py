@@ -2,7 +2,7 @@
 Abstract base class for agents
 """
 from abc import ABC, abstractmethod
-
+from typing import List
 class Agent(ABC):
     """
     Abstract base class for agents.
@@ -12,11 +12,11 @@ class Agent(ABC):
         pass
     
     @abstractmethod
-    def make_decision(self, own_dices, current_bet):
+    def make_decision(self, own_dices: List[int], current_bet: List[int], first_bet: bool):
         pass
 
     @abstractmethod
-    def _place_bet(self):
+    def _place_bet(self, current_bet: List[int], first_bet: bool):
         pass
 
     @abstractmethod

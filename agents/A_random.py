@@ -10,36 +10,48 @@ class RandomAgent(Agent):
     def __init__(self):
         pass
     
-    def make_decision(self, own_dices, current_bet) -> None:
+    def make_decision(self, own_dices: List[int], current_bet: List[int], first_bet: bool) -> None:
         """
         Our random agents decides what to do randomly. 
         Currently, it bluffs 20% of the time.
-        """
-        x = np.random.rand()
 
-        if x < 0.8:
-            decision = self._place_bet(current_bet)
+        If it's the first bet, always place a (random) bet
+        """
+        if first_bet == True: 
+            decision = self._place_bet(own_dices, current_bet, first_bet)
         else:
-            decision = self._call_bluff()
+            x = np.random.rand()
+
+            if x < 0.8:
+                decision = self._place_bet(own_dices, current_bet, first_bet)
+            else:
+                decision = self._call_bluff()
         
         return decision
 
-    def _place_bet(self, current_bet) -> List[int]:
+    def _place_bet(self, own_dices: List[int], current_bet, first_bet: bool) -> List[int]:
         """
         Placing the bet. The random agents decides at random (50/50) whether to increase value or quantity.
+
+        If it's the first bet, choose quantity and value at (semi-) random
         """
         bet = current_bet
-        # randomly decide whether to raise value or quantity
-        x = np.random.rand()
-
-        if x > 0.5 and bet[1] < 6:
-            # increase value
-            bet[1] = bet[1] + 1
-        else:
-            # increase quantity
-            bet[0] = bet[0] + 1
-            # choose random value for the value
+        if first_bet == True:
+            # we are at the first bet. choose some random quantity within our own quantity of dices + 1 (there is always at least one other dice in the game), and some random value
+            bet[0] = np.random.randint(1,len(own_dices)+1)
             bet[1] = np.random.randint(1,7)
+        else: 
+            # randomly decide whether to raise value or quantity
+            x = np.random.rand()
+
+            if x > 0.5 and bet[1] < 6:
+                # increase value
+                bet[1] = bet[1] + 1
+            else:
+                # increase quantity
+                bet[0] = bet[0] + 1
+                # choose random value for the value
+                bet[1] = np.random.randint(1,7)
 
         return bet
     
