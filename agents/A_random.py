@@ -18,17 +18,17 @@ class RandomAgent(Agent):
         x = np.random.rand()
 
         if x < 0.8:
-            self._place_bet(current_bet)
+            decision = self._place_bet(current_bet)
         else:
-            self._call_bluff()
-        pass
+            decision = self._call_bluff()
+        
+        return decision
 
     def _place_bet(self, current_bet) -> List[int]:
         """
         Placing the bet. The random agents decides at random (50/50) whether to increase value or quantity.
         """
         bet = current_bet
-
         # randomly decide whether to raise value or quantity
         x = np.random.rand()
 
