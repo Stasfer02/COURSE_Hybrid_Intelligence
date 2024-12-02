@@ -5,19 +5,20 @@ main running file
 from gamemanager import PerudoGameManager
 from agents.A_abstractagent import Agent
 from agents.A_random import RandomAgent
+from agents.A_SafeBet import SafeBetAgent
+from agents.A_Probabilistic import ProbabilisticAgent
 
 
 def main() -> None:
 
     # specify the amount of players
     num_players = 3
-    players = (RandomAgent(),RandomAgent(),RandomAgent())
+    players = (RandomAgent(),RandomAgent(),SafeBetAgent())
 
     # create the game manager
     gameManager = PerudoGameManager(num_players)
 
     active_game = True
-    winning_player = None
     while active_game == True:
         # While there is more than 1 active player, roll the dices for a round of Perudo!
         print("\n","-"* 100,"NEW ROUND, ROLLING THE DICES", "-"*100)
@@ -32,7 +33,8 @@ def main() -> None:
 
             # get the player decision
             player_dices = all_dices[player_to_move]
-            decision = players[player_to_move].make_decision(player_dices, current_bet, first_bet)
+            total_dices_cnt = sum(len(dices) for dices in all_dices.values())
+            decision = players[player_to_move].make_decision(player_dices, total_dices_cnt, current_bet, first_bet)
             first_bet = False # only place a first_bet once
 
             if decision == "bluff":

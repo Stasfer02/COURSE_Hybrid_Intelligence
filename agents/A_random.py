@@ -4,13 +4,13 @@ Random agent. Chooses to raise the bet 80% of the time and otherwise calls bluff
 
 from agents.A_abstractagent import Agent
 import numpy as np
-from typing import List
+from typing import List,Union
 
 class RandomAgent(Agent):
     def __init__(self):
         pass
     
-    def make_decision(self, own_dices: List[int], current_bet: List[int], first_bet: bool) -> None:
+    def make_decision(self, own_dices: List[int], total_dices: int, current_bet: List[int], first_bet: bool) -> Union[str,int]:
         """
         Our random agents decides what to do randomly. 
         Currently, it bluffs 20% of the time.
@@ -18,7 +18,13 @@ class RandomAgent(Agent):
         If it's the first bet, always place a (random) bet
         """
         if first_bet == True: 
+            # it is the first bet, so we cannot call bluff
             decision = self._place_bet(own_dices, current_bet, first_bet)
+
+        elif current_bet[0] > total_dices:
+            # if the bet quantity is more than the amount of dices, always call bluff
+            decision = self._call_bluff()
+
         else:
             x = np.random.rand()
 

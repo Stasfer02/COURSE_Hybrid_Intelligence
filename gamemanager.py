@@ -4,7 +4,7 @@ Creating a game manager class that determines state of the game and what informa
 We have chosen the game of Perudo. 
 
 """
-from typing import List, Tuple
+from typing import List
 import numpy as np
 
 class PerudoGameManager:
