@@ -6,6 +6,7 @@ We have chosen the game of Perudo.
 """
 from typing import List
 import numpy as np
+import logging
 
 class PerudoGameManager:
     """
@@ -50,7 +51,7 @@ class PerudoGameManager:
         """
         self.current_bet = bet
         self._next_player()
-        print("New bet placed: ", bet,"\n")
+        logging.debug(f"New bet placed: {bet} \n")
         
         pass
 
@@ -61,15 +62,15 @@ class PerudoGameManager:
         1. Evaluate it's truth.
         2. Determine who wins/loses and withdraw a dice accordingly.
         """
-        print("Bluff called by player: ", self.players[self.player_to_move_idx],"at player index:", self.player_to_move_idx, "\n")
+        logging.debug(f"Bluff called by player: {self.players[self.player_to_move_idx]} at player index: {self.player_to_move_idx} \n")
         
         bet = self.current_bet
         quantity = bet[0]
         value = bet[1]
-        print("Current bet: There are ", quantity, " dices with value: ", value)
+        logging.debug(f"Current bet: There are {quantity} dices with value: {value}")
 
         true_quantity = self._count_dices(value)
-        print("True quantity: ", true_quantity)
+        logging.debug(f"True quantity: {true_quantity}")
 
         if true_quantity >= quantity:
             # wrong bluff! remove dice 
@@ -112,7 +113,7 @@ class PerudoGameManager:
         """
         Private method for removing a dice from a certain player.
         """
-        print("Removing dice from player: ", self.players[player_idx], "at player index: ", player_idx)
+        logging.debug(f"Removing dice from player: {self.players[player_idx]} at player index: {player_idx}")
 
         # subtract a dice 
         self.dices_pp[player_idx] -= 1
@@ -128,7 +129,7 @@ class PerudoGameManager:
         """
         eliminate a player from the active player list, also remove it's index from the "dices per player" list to ensure these align.
         """
-        print("Eliminating player: ", self.players[player_idx], "at index: ", player_idx)
+        # print("Eliminating player: ", self.players[player_idx], "at index: ", player_idx)
 
         del self.players[player_idx]
         del self.dices_pp[player_idx]

@@ -8,23 +8,19 @@ from agents.A_random import RandomAgent
 from agents.A_SafeBet import SafeBetAgent
 from agents.A_Probabilistic import ProbabilisticAgent
 
+from typing import Tuple, List
+import matplotlib.pyplot as plt
+import logging
 
-def main() -> None:
-
-    # specify the amount of players
-    num_players = 3
-    players = (RandomAgent(),ProbabilisticAgent(),SafeBetAgent())
-
-    # create the game manager
-    gameManager = PerudoGameManager(num_players)
-
+def play_game(gameManager: PerudoGameManager, num_players: int, players: Tuple[Agent]):
+    
     active_game = True
     count = 0
     while active_game == True and count < 100:
         if count > 10:
             exit
         # While there is more than 1 active player, roll the dices for a round of Perudo!
-        print("\n","-"* 100,"NEW ROUND, ROLLING THE DICES", "-"*100)
+        logging.debug(f"\n {'-'* 100} NEW ROUND, ROLLING THE DICES{'-'*100}")
         gameManager.roll_all_dices()
 
         bluff_called = False
@@ -32,7 +28,7 @@ def main() -> None:
         while bluff_called == False:
             # now we enter a series of betting/bluffing
             active_players, all_dices, current_bet, player_to_move = gameManager.get_game_state()
-            print("BETTING ROUND: players: ",active_players, "current bet: ", current_bet, "player to move: ", player_to_move, " all dices: ", all_dices)
+            logging.debug(f"BETTING ROUND: players: {active_players} current bet: {current_bet} player to move: {player_to_move} all dices: {all_dices}")
 
             # get the player decision
             player_dices = all_dices[player_to_move]
@@ -56,10 +52,32 @@ def main() -> None:
         if len(active_players) <= 1:
             active_game = False
             winning_player = active_players[0]
-    
+
+    return winning_player
+
+def main() -> None:
+
+    logging.basicConfig(
+    level=logging.INFO,  # Set the minimum level to DEBUG
+    format='%(message)s'
+    )
+
+    # specify the amount of players
+    num_players = 3
+    players = (RandomAgent(),ProbabilisticAgent(),SafeBetAgent())
+
+    # create the game manager
+    gameManager = PerudoGameManager(num_players)
+
+    winning_player = play_game(gameManager, num_players, players)
     # game is done! print the winner.
-    print("-"* 200,"\n","-"* 200)
-    print("End of the game! The winning player: ", winning_player, "\n")
+    logging.info(f"{'-' * 200}")
+    logging.debug(f"{'-'* 200}")
+    logging.info(f"End of the game! The winning player: {winning_player} \n")
+
+    # now perform some plotting:
+
+
 
 if __name__ == "__main__":
     main()

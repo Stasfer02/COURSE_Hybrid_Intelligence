@@ -8,6 +8,8 @@ from agents.A_abstractagent import Agent
 from typing import List, Union
 from math import comb
 
+import logging
+
 class ProbabilisticAgent(Agent):
     """
     class for a probabilistic agent. basically, it does the following:
@@ -45,13 +47,13 @@ class ProbabilisticAgent(Agent):
 
         # decide on return
         if p_current_bet_false >= p_incr_value_bet and p_current_bet_false >= p_quantity_best:
-            print("FROM PROB-AGENT: BLUFF CHOSEN")
+            logging.debug("FROM PROB-AGENT: BLUFF CHOSEN")
             return self._call_bluff()
         elif p_incr_value_bet > p_quantity_best:
-            print("FROM PROB-AGENT: INCR-VALUE CHOSEN")
+            logging.debug("FROM PROB-AGENT: INCR-VALUE CHOSEN")
             return incr_value_bet
         else:
-            print("FROM PROB-AGENT: INCR QUANTITY CHOSEN FOR QUANTITY: ", p_quantities.index(p_quantity_best)+1)
+            logging.debug(f"FROM PROB-AGENT: INCR QUANTITY CHOSEN FOR QUANTITY: {p_quantities.index(p_quantity_best)+1}")
             return [current_bet[0]+1, p_quantities.index(p_quantity_best)+1]
 
     def _p_bet(self, own_dices: List[int], total_dices: int, bet: int):
