@@ -10,7 +10,7 @@ class RandomAgent(Agent):
     def __init__(self):
         pass
     
-    def make_decision(self, own_dices: List[int], total_dices: int, current_bet: List[int], first_bet: bool) -> Union[str,int]:
+    def make_decision(self, own_dices: List[int], total_dices: int, current_bet: List[int], first_bet: bool) -> Union[str,List[int]]:
         """
         Our random agents decides what to do randomly. 
         Currently, it bluffs 20% of the time.

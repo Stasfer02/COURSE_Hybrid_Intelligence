@@ -15,8 +15,10 @@ class Agent(ABC):
     def make_decision(self, own_dices: List[int], current_bet: List[int], first_bet: bool):
         pass
 
-    @abstractmethod
     def _place_bet(self, current_bet: List[int], first_bet: bool):
+        pass
+
+    def _p_bet(self):
         pass
 
     @abstractmethod

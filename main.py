@@ -13,7 +13,7 @@ def main() -> None:
 
     # specify the amount of players
     num_players = 3
-    players = (RandomAgent(),RandomAgent(),SafeBetAgent())
+    players = (RandomAgent(),ProbabilisticAgent(),SafeBetAgent())
 
     # create the game manager
     gameManager = PerudoGameManager(num_players)
@@ -29,7 +29,7 @@ def main() -> None:
         while bluff_called == False:
             # now we enter a series of betting/bluffing
             active_players, all_dices, current_bet, player_to_move = gameManager.get_game_state()
-            print("BETTING ROUND: players: ",active_players, "current bet: ", current_bet, "player to move: ", player_to_move, " total dices: ", all_dices)
+            print("BETTING ROUND: players: ",active_players, "current bet: ", current_bet, "player to move: ", player_to_move, " all dices: ", all_dices)
 
             # get the player decision
             player_dices = all_dices[player_to_move]

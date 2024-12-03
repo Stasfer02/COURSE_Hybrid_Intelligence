@@ -40,7 +40,7 @@ class PerudoGameManager:
         
         # also reset the current bet. 
         # TODO maybe we should incorporate some starting command for the first bet.
-        self.current_bet = [1,1]
+        self.current_bet = [0,1]
 
         pass
     
