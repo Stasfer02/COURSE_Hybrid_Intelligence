@@ -11,6 +11,7 @@ from agents.A_Probabilistic import ProbabilisticAgent
 from typing import Tuple, List
 import matplotlib.pyplot as plt
 import logging
+import os
 
 def play_game(gameManager: PerudoGameManager, num_players: int, players: Tuple[Agent]):
     
@@ -64,20 +65,43 @@ def main() -> None:
 
     # specify the amount of players
     num_players = 3
-    players = (RandomAgent(),ProbabilisticAgent(),SafeBetAgent())
+    players = [ProbabilisticAgent(),ProbabilisticAgent(),ProbabilisticAgent()]
 
     # create the game manager
     gameManager = PerudoGameManager(num_players)
 
-    winning_player = play_game(gameManager, num_players, players)
-    # game is done! print the winner.
-    logging.info(f"{'-' * 200}")
-    logging.debug(f"{'-'* 200}")
-    logging.info(f"End of the game! The winning player: {winning_player} \n")
+    games = 1000
+    player_wins = [0] * num_players
+    for game in range(games):
 
-    # now perform some plotting:
+        gameManager = PerudoGameManager(num_players)
 
+        winning_player = play_game(gameManager, num_players, players)
+        # game is done! print the winner.
+        logging.info(f"{'-' * 200}")
+        logging.debug(f"{'-'* 200}")
+        logging.info(f"End of the game! The winning player: {winning_player} \n")
 
+        player_wins[winning_player] += 1
+    
+    logging.info("End of all games.")
+    
+    # names for plotting
+    names = []
+    for i in range(len(players)):
+        name = players[i].name + " " + str(i)
+        names.append(name)
+
+    # file storage
+    curr_folder = os.path.dirname(__file__)
+    plot_path = os.path.join(curr_folder, "data/PPP.png")
+    print(plot_path)
+
+    # plotting!
+    plt.figure()
+    plt.bar(names,player_wins,  color=['green', 'green', 'green'])
+    plt.savefig(plot_path)
+    plt.close()
 
 if __name__ == "__main__":
     main()

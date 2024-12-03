@@ -8,6 +8,7 @@ from typing import List,Union
 
 class RandomAgent(Agent):
     def __init__(self):
+        self.name = "Random Agent"
         pass
     
     def make_decision(self, own_dices: List[int], total_dices: int, current_bet: List[int], first_bet: bool) -> Union[str,List[int]]:

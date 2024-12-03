@@ -9,6 +9,7 @@ class Agent(ABC):
     """
     @abstractmethod
     def __init__(self):
+        self.name = "Agent"
         pass
     
     @abstractmethod

@@ -22,7 +22,7 @@ class ProbabilisticAgent(Agent):
     We then choose the most likely option. 
     """
     def __init__(self):
-        
+        self.name = "Probabilistic Agent"
         pass
 
     def make_decision(self, own_dices: List[int], total_dices: int, current_bet: int, first_bet: bool) -> Union[str,int]: 

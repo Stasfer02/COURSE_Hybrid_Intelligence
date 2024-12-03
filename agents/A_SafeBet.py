@@ -14,6 +14,7 @@ class SafeBetAgent(Agent):
     Class for the safe betting agent. 
     """
     def __init__(self):
+        self.name = "Safe Bet Agent"
         pass
 
     def make_decision(self, own_dices: List[int], total_dices: int,  current_bet: int, first_bet: bool) -> Union[str,List[int]]: 
