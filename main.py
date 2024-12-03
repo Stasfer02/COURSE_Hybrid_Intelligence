@@ -12,6 +12,7 @@ from typing import List
 import matplotlib.pyplot as plt
 import logging
 import os
+import sys
 
 def play_game(gameManager: PerudoGameManager, num_players: int, players: List[Agent]) -> int:
     """
@@ -33,21 +34,26 @@ def play_game(gameManager: PerudoGameManager, num_players: int, players: List[Ag
             active_players, all_dices, current_bet, player_to_move = gameManager.get_game_state()
             logging.debug(f"BETTING ROUND: players: {active_players} current bet: {current_bet} player to move: {player_to_move} all dices: {all_dices}")
 
+            old_bet = current_bet   # for eval
+            print(old_bet)
             # get the player decision
             player_dices = all_dices[player_to_move]
             total_dices_cnt = sum(len(dices) for dices in all_dices.values())
             decision = players[player_to_move].make_decision(player_dices, total_dices_cnt, current_bet, first_bet)
-            first_bet = False # only place a first_bet once
-
             if decision == "bluff":
                 # bluff called! We can exit the series now.
                 bluff_called = True
                 # let's evaluate the bluff.
                 gameManager.bluff_called()
             else:
-                # A bet is placed, we continue with the series.
+                # A bet is placed, we check it's truth and continue with the series.
+                if not gameManager.evaluate_bet(old_bet,decision) and first_bet == False:
+                    logging.critical(f"EXITED GAME AFTER FALSE BET. All dices: {all_dices}")
+                    sys.exit()
                 gameManager.bet_placed(decision)
                 count += 1
+            
+            first_bet = False # only place a first_bet once
         
         # A game has been played after someone has called bluff.
         # We have taken the dices and potentially eliminated a player, so evaluate the amount of players to determine whether or not to continue.
@@ -63,13 +69,13 @@ def main() -> None:
     Play a certain amount of games, and store the result as a plot in the data folder.
     """
     logging.basicConfig(
-    level=logging.INFO,  # Set the minimum level to DEBUG
+    level=logging.DEBUG,  # Set the minimum level to DEBUG
     format='%(message)s'
     )
 
     # specify the amount of players
     num_players = 3
-    players = [ProbabilisticAgent(),ProbabilisticAgent(),ProbabilisticAgent()]
+    players = [RandomAgent(),SafeBetAgent(),ProbabilisticAgent()]
 
     # create the game manager
     gameManager = PerudoGameManager(num_players)
@@ -98,12 +104,12 @@ def main() -> None:
 
     # file storage
     curr_folder = os.path.dirname(__file__)
-    plot_path = os.path.join(curr_folder, "data/PPP.png")
+    plot_path = os.path.join(curr_folder, "data/RSP.png")
     print(plot_path)
 
     # plotting!
     plt.figure()
-    plt.bar(names,player_wins,  color=['green', 'green', 'green'])
+    plt.bar(names,player_wins,  color=['red', 'blue', 'green'])
     plt.savefig(plot_path)
     plt.close()
 

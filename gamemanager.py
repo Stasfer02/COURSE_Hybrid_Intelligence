@@ -50,9 +50,6 @@ class PerudoGameManager:
         self.current_bet = bet
         self._next_player()
         logging.debug(f"New bet placed: {bet} \n")
-        
-        pass
-
 
     def bluff_called(self) -> None:
         """
@@ -81,7 +78,6 @@ class PerudoGameManager:
         # reset player to move
         # TODO we now always set this to player at index 0, but maybe this should be different? like always the player that just lost a dice or something.
         self.player_to_move_idx = 0
-
 
     def _next_player(self) -> None:
         """
@@ -149,3 +145,19 @@ class PerudoGameManager:
         4. player to move.
         """
         return self.players, self.dice_values, self.current_bet, self.players[self.player_to_move_idx]
+    
+    def evaluate_bet(self, previous_bet: List[int], new_bet: List[int]) -> bool:
+        """
+        evaluate bet to ensure that the agents do not make mistakes.
+        """
+        if new_bet[0] < previous_bet[0]:
+            # we decreased in quantity
+            logging.debug(f"BETTING MISTAKE: previous bet: {previous_bet}, next bet: {new_bet}")
+            return False
+        elif new_bet[0] == previous_bet[0] and new_bet[1] <= previous_bet[1]:
+            # quantity stayed the same, but so did the value (or it decreased)
+            logging.debug(f"BETTING MISTAKE: previous bet: {previous_bet}, next bet: {new_bet}")
+            return False
+        else:
+            # we either increased quantity or value
+            return True

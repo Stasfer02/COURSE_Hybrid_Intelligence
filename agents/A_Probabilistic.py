@@ -30,7 +30,10 @@ class ProbabilisticAgent(Agent):
 
         # incrementing value (keep quantity)
         incr_value_bet = [current_bet[0], current_bet[1]+1]
-        p_incr_value_bet = self._p_bet(own_dices, total_dices, incr_value_bet)
+        if current_bet[1] + 1 > 6:
+            p_incr_value_bet = 0
+        else:
+            p_incr_value_bet = self._p_bet(own_dices, total_dices, incr_value_bet)
 
         # increment quantity, calculate the probability for all values!
         p_quantities = []
@@ -60,9 +63,6 @@ class ProbabilisticAgent(Agent):
         """
         bet_quantity = bet[0]
         bet_value = bet[1]
-        if bet_value > 6:
-            # we cannot increment value
-            return 0
 
         # count values on own dices
         dice_value_counts = [0,0,0,0,0,0]
