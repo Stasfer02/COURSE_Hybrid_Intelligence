@@ -20,7 +20,7 @@ class ProbabilisticAgent(Agent):
 
     We then choose the most likely option. 
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.name = "Probabilistic Agent"
 
     def make_decision(self, own_dices: List[int], total_dices: int, current_bet: int, first_bet: bool) -> Union[str,int]: 
@@ -54,7 +54,7 @@ class ProbabilisticAgent(Agent):
             logging.debug(f"FROM PROB-AGENT: INCR QUANTITY CHOSEN FOR QUANTITY: {p_quantities.index(p_quantity_best)+1}")
             return [current_bet[0]+1, p_quantities.index(p_quantity_best)+1]
 
-    def _p_bet(self, own_dices: List[int], total_dices: int, bet: int):
+    def _p_bet(self, own_dices: List[int], total_dices: int, bet: int) -> float:
         """
         We calculate the probabilty of some bet being correct using a binomial distribution. 
         """
