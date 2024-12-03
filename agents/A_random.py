@@ -56,8 +56,8 @@ class RandomAgent(Agent):
             else:
                 # increase quantity
                 bet[0] = bet[0] + 1
-                # choose random value for the value
-                bet[1] = np.random.randint(1,7)
+                # choose random value for the value (higher than the current one)
+                bet[1] = np.random.randint(bet[1],7)
 
         return bet
     

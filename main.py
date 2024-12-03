@@ -19,7 +19,10 @@ def main() -> None:
     gameManager = PerudoGameManager(num_players)
 
     active_game = True
-    while active_game == True:
+    count = 0
+    while active_game == True and count < 100:
+        if count > 10:
+            exit
         # While there is more than 1 active player, roll the dices for a round of Perudo!
         print("\n","-"* 100,"NEW ROUND, ROLLING THE DICES", "-"*100)
         gameManager.roll_all_dices()
@@ -45,6 +48,7 @@ def main() -> None:
             else:
                 # A bet is placed, we continue with the series.
                 gameManager.bet_placed(decision)
+                count += 1
         
         # A game has been played after someone has called bluff.
         # We have taken the dices and potentially eliminated a player, so evaluate the amount of players to determine whether or not to continue.

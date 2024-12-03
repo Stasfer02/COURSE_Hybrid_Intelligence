@@ -28,21 +28,31 @@ class ProbabilisticAgent(Agent):
         # we calculate the probability of the bet being correct, so subtract that from 1 to find the probability of it being false
         p_current_bet_false= 1 - self._p_bet(own_dices, total_dices, current_bet)
 
-        # increment quantity (keep value)
-        incr_quantity_bet = [current_bet[0]+1, current_bet[1]]
-        p_incr_quantity_bet = self._p_bet(own_dices, total_dices, incr_quantity_bet)
-
-        # incrementing value (take quantity 1)
-        incr_value_bet = [1, current_bet[1]+1]
+        # incrementing value (keep quantity)
+        incr_value_bet = [current_bet[0], current_bet[1]+1]
         p_incr_value_bet = self._p_bet(own_dices, total_dices, incr_value_bet)
 
+        # increment quantity
+        # TODO for all values!
+        p_quantities = []
+        for val in range(1,7):
+            incr_quantity_bet = [current_bet[0]+1, val]
+
+            p_incr_quantity_bet = self._p_bet(own_dices, total_dices, incr_quantity_bet)
+            p_quantities.append(p_incr_quantity_bet)
+
+        p_quantity_best = max(p_quantities)
+
         # decide on return
-        if p_current_bet_false >= p_incr_quantity_bet and p_current_bet_false >= p_incr_value_bet:
+        if p_current_bet_false >= p_incr_value_bet and p_current_bet_false >= p_quantity_best:
+            print("FROM PROB-AGENT: BLUFF CHOSEN")
             return self._call_bluff()
-        elif p_incr_quantity_bet >= p_incr_value_bet:
-            return incr_quantity_bet
-        else:
+        elif p_incr_value_bet > p_quantity_best:
+            print("FROM PROB-AGENT: INCR-VALUE CHOSEN")
             return incr_value_bet
+        else:
+            print("FROM PROB-AGENT: INCR QUANTITY CHOSEN FOR QUANTITY: ", p_quantities.index(p_quantity_best)+1)
+            return [current_bet[0]+1, p_quantities.index(p_quantity_best)+1]
 
     def _p_bet(self, own_dices: List[int], total_dices: int, bet: int):
         """
@@ -72,7 +82,6 @@ class ProbabilisticAgent(Agent):
 
         # now we calculate the probabilties of the dices landing on the target value. 
         # Note that we do not need exactly the target value, but AT LEAST the target value
-        print("DEBUG: rest quantity: ", rest_quantity, " rest dices: ", rest_dices)
         for i in range(rest_quantity, rest_dices+1):
             p_bet_true += comb(rest_dices, i) * (p_dice ** i) * ((1 - p_dice) ** (rest_dices - i))
         

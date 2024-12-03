@@ -35,10 +35,13 @@ class SafeBetAgent(Agent):
             return [dice_value_counts[bet_value-1], bet_value]
         else:
             # see if we have a dice with a higher value than the current value.
-            for val_step in range(bet_value, 5):
+            for val_step in range(bet_value, 6):
                 if dice_value_counts[val_step] > 0:
-                    # we return the amount we have of those.
-                    return [dice_value_counts[val_step], val_step]
+                    # we return the amount we have of those. if it is less than the current amount then we call bluff.
+                    if dice_value_counts[val_step] < current_bet[0]:
+                        return self._call_bluff()
+                    else:
+                        return [dice_value_counts[val_step], val_step+1]
             
             # no increment possible in quantity or value, so we call bluff
             return self._call_bluff()
