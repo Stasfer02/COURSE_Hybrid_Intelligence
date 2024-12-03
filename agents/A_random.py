@@ -9,7 +9,6 @@ from typing import List,Union
 class RandomAgent(Agent):
     def __init__(self):
         self.name = "Random Agent"
-        pass
     
     def make_decision(self, own_dices: List[int], total_dices: int, current_bet: List[int], first_bet: bool) -> Union[str,List[int]]:
         """
@@ -33,7 +32,6 @@ class RandomAgent(Agent):
                 decision = self._place_bet(own_dices, current_bet, first_bet)
             else:
                 decision = self._call_bluff()
-        
         return decision
 
     def _place_bet(self, own_dices: List[int], current_bet, first_bet: bool) -> List[int]:
@@ -59,7 +57,6 @@ class RandomAgent(Agent):
                 bet[0] = bet[0] + 1
                 # choose random value for the value (higher than the current one)
                 bet[1] = np.random.randint(bet[1],7)
-
         return bet
     
     def _call_bluff(self) -> str:

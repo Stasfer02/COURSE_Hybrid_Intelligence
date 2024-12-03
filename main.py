@@ -8,13 +8,15 @@ from agents.A_random import RandomAgent
 from agents.A_SafeBet import SafeBetAgent
 from agents.A_Probabilistic import ProbabilisticAgent
 
-from typing import Tuple, List
+from typing import List
 import matplotlib.pyplot as plt
 import logging
 import os
 
-def play_game(gameManager: PerudoGameManager, num_players: int, players: Tuple[Agent]):
-    
+def play_game(gameManager: PerudoGameManager, num_players: int, players: List[Agent]) -> int:
+    """
+    playing a single game, returns the winner of that game (player index).
+    """
     active_game = True
     count = 0
     while active_game == True and count < 100:
@@ -57,7 +59,9 @@ def play_game(gameManager: PerudoGameManager, num_players: int, players: Tuple[A
     return winning_player
 
 def main() -> None:
-
+    """
+    Play a certain amount of games, and store the result as a plot in the data folder.
+    """
     logging.basicConfig(
     level=logging.INFO,  # Set the minimum level to DEBUG
     format='%(message)s'
@@ -72,7 +76,7 @@ def main() -> None:
 
     games = 1000
     player_wins = [0] * num_players
-    for game in range(games):
+    for _ in range(games):
 
         gameManager = PerudoGameManager(num_players)
 

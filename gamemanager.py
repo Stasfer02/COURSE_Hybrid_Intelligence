@@ -42,8 +42,6 @@ class PerudoGameManager:
         # also reset the current bet. 
         # TODO maybe we should incorporate some starting command for the first bet.
         self.current_bet = [0,1]
-
-        pass
     
     def bet_placed(self, bet) -> None:
         """
@@ -83,7 +81,6 @@ class PerudoGameManager:
         # reset player to move
         # TODO we now always set this to player at index 0, but maybe this should be different? like always the player that just lost a dice or something.
         self.player_to_move_idx = 0
-        pass
 
 
     def _next_player(self) -> None:
@@ -95,8 +92,6 @@ class PerudoGameManager:
             self.player_to_move_idx = 0
         else:
             self.player_to_move_idx += 1
-
-        pass
     
     def _prev_player_idx(self) -> int:
         """
@@ -122,19 +117,15 @@ class PerudoGameManager:
         if self.dices_pp[player_idx] == 0:
             # if so, eliminate the player
             self._eliminate_player(player_idx)
-        
-        pass
 
     def _eliminate_player(self, player_idx) -> None:
         """
         eliminate a player from the active player list, also remove it's index from the "dices per player" list to ensure these align.
         """
-        # print("Eliminating player: ", self.players[player_idx], "at index: ", player_idx)
+        logging.debug(f"Eliminating player: {self.players[player_idx]} at index: {player_idx}")
 
         del self.players[player_idx]
         del self.dices_pp[player_idx]
-
-        pass
 
     def _count_dices(self, value) -> int:
         """
@@ -147,10 +138,8 @@ class PerudoGameManager:
             for item in valuelist:
                 if item == value:
                     count += 1
-        
-        pass
-
         return count
+
     def get_game_state(self):
         """
         Provide the current game state, consisting of:

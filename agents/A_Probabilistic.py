@@ -7,7 +7,6 @@ It calculates the possibility of a bet being correct (incorporating it's own dic
 from agents.A_abstractagent import Agent
 from typing import List, Union
 from math import comb
-
 import logging
 
 class ProbabilisticAgent(Agent):
@@ -23,7 +22,6 @@ class ProbabilisticAgent(Agent):
     """
     def __init__(self):
         self.name = "Probabilistic Agent"
-        pass
 
     def make_decision(self, own_dices: List[int], total_dices: int, current_bet: int, first_bet: bool) -> Union[str,int]: 
         
@@ -34,8 +32,7 @@ class ProbabilisticAgent(Agent):
         incr_value_bet = [current_bet[0], current_bet[1]+1]
         p_incr_value_bet = self._p_bet(own_dices, total_dices, incr_value_bet)
 
-        # increment quantity
-        # TODO for all values!
+        # increment quantity, calculate the probability for all values!
         p_quantities = []
         for val in range(1,7):
             incr_quantity_bet = [current_bet[0]+1, val]
@@ -43,6 +40,7 @@ class ProbabilisticAgent(Agent):
             p_incr_quantity_bet = self._p_bet(own_dices, total_dices, incr_quantity_bet)
             p_quantities.append(p_incr_quantity_bet)
 
+        # choose the value with the highest probability for that quantity increment
         p_quantity_best = max(p_quantities)
 
         # decide on return
@@ -60,7 +58,6 @@ class ProbabilisticAgent(Agent):
         """
         We calculate the probabilty of some bet being correct using a binomial distribution. 
         """
-        
         bet_quantity = bet[0]
         bet_value = bet[1]
         if bet_value > 6:
@@ -88,8 +85,6 @@ class ProbabilisticAgent(Agent):
             p_bet_true += comb(rest_dices, i) * (p_dice ** i) * ((1 - p_dice) ** (rest_dices - i))
         
         return p_bet_true
-
-
 
     def _call_bluff(self) -> str:
         return "bluff"

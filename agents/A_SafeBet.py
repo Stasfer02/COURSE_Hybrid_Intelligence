@@ -15,7 +15,6 @@ class SafeBetAgent(Agent):
     """
     def __init__(self):
         self.name = "Safe Bet Agent"
-        pass
 
     def make_decision(self, own_dices: List[int], total_dices: int,  current_bet: int, first_bet: bool) -> Union[str,List[int]]: 
         """
@@ -48,7 +47,6 @@ class SafeBetAgent(Agent):
             return self._call_bluff()
 
     def _place_bet(self, current_bet: List[int], first_bet: bool):
-        
         pass
 
     def _call_bluff(self) -> str:
