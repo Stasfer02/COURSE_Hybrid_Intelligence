@@ -75,7 +75,7 @@ def main() -> None:
 
     # specify the amount of players
     num_players = 3
-    players = [RandomAgent(),SafeBetAgent(),ProbabilisticAgent()]
+    players = [ProbabilisticAgent(),SafeBetAgent(),ProbabilisticAgent()]
 
     # create the game manager
     gameManager = PerudoGameManager(num_players)
@@ -104,12 +104,12 @@ def main() -> None:
 
     # file storage
     curr_folder = os.path.dirname(__file__)
-    plot_path = os.path.join(curr_folder, "data/RSP.png")
+    plot_path = os.path.join(curr_folder, "data/PSP.png")
     print(plot_path)
 
     # plotting!
     plt.figure()
-    plt.bar(names,player_wins,  color=['red', 'blue', 'green'])
+    plt.bar(names,player_wins,  color=['green', 'blue', 'green'])
     plt.savefig(plot_path)
     plt.close()
 
