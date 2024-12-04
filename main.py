@@ -69,7 +69,7 @@ def main() -> None:
     Play a certain amount of games, and store the result as a plot in the data folder.
     """
     logging.basicConfig(
-    level=logging.DEBUG,  # Set the minimum level to DEBUG
+    level=logging.INFO,  # Set the minimum level to DEBUG
     format='%(message)s'
     )
 
