@@ -34,8 +34,8 @@ def play_game(gameManager: PerudoGameManager, num_players: int, players: List[Ag
             active_players, all_dices, current_bet, player_to_move = gameManager.get_game_state()
             logging.debug(f"BETTING ROUND: players: {active_players} current bet: {current_bet} player to move: {player_to_move} all dices: {all_dices}")
 
-            old_bet = current_bet   # for eval
-            print(old_bet)
+            old_quantity = current_bet[0]   # for eval
+            old_value = current_bet[1]
             # get the player decision
             player_dices = all_dices[player_to_move]
             total_dices_cnt = sum(len(dices) for dices in all_dices.values())
@@ -47,7 +47,7 @@ def play_game(gameManager: PerudoGameManager, num_players: int, players: List[Ag
                 gameManager.bluff_called()
             else:
                 # A bet is placed, we check it's truth and continue with the series.
-                if not gameManager.evaluate_bet(old_bet,decision) and first_bet == False:
+                if not gameManager.evaluate_bet([old_quantity, old_value],decision) and first_bet == False:
                     logging.critical(f"EXITED GAME AFTER FALSE BET. All dices: {all_dices}")
                     sys.exit()
                 gameManager.bet_placed(decision)
